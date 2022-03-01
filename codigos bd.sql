@@ -91,3 +91,36 @@ select coluna1, sum(coluna2) from tabela group by coluna1 --agrupando pela colun
 --Filtrar dados que ja estao agrupados (where para dados agrupados) HAVING
     --Diferença entre o HAVING e Where: Having é aplicado depois que os dados ja foram agrupados e o Where antes dos dados serem agrupados
     select coluna1, sum(coluna2) "total" from tabela group by coluna1 having condição
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+--Join
+    --Retorna apenas os resultados que correspondem (existem) tanto na tabelaA como na tabelaB INNER JOIN
+    select idTabelaA, nomeTabelaA, ruaTabelaB, cidadeTabelaB from TabelaA A inner join TabelaB on B.chaveprimaria = A.chaveestrangeira      /*Para juntar todas as informaçoes das tabelas*/ => select top 10 * from TabelaA A inner join TabelaB on B.chaveprimaria = A.chaveestrangeira
+
+    --Retorna o conjunto de todos os registros correspondentes da tabelaA e tabelaB quando sao iguais.E caso nao haja valores correspondentes , ele irá preencher esse lado com null FULL OUTER JOIN
+    select * from tabelaA full outer join tabelaB on tabelaA.nome = tabelaB.nome
+
+    --Retorna um conjunto de todos os registros da TabelaA, e alem disso, os registros correspondentes (quando disponiveis) na tabelaB. Se nao houver registros correspondentes, ele simplismente vai preencher com null LEFT OUTER JOIN
+    select * from tabelaA left outer join tabelaB on tabelaA.nome = tabelaB.nome
+-----------------------------------------------------------------------------------
+
+-- Combina dois ou mais resultados de um select em apenas um resultado UNION
+select coluna1, coluna2 from tabela1 union select coluna1, coluna2 from tabela2 -- removendo resultados duplicados
+select coluna1, coluna2 from tabela1 union all select coluna1, coluna2 from tabela2 -- incluindo resultados duplicados
+
+--Extrair diversas informações diferentes de um dado de coluna que tem informação de data
+--DATEPART
+    --Datepart sql server (google) lista de comandos que podem ser executados
+    select id, datepart(info que quer extrair, coluna) from tabela
+
+--Concatenar colunas
+select concat(coluna1, coluna2... colunaN) from tabela --para ter espaço entre as colunas: concat(coluna1,' ', coluna2... colunaN)
+
+--Operações com strings
+--Sql server string operations (google)
+-- Alguns exemplos
+    select upper(coluna) from tabela -- para deixar todas as letras da string maiusculas
+    select lower(coluna) from tabela -- para deixar todas as letras da string minusculas
+    select len(coluna) from tabela -- para retornar o numero de caracteres de uma string
+    select substring(coluna, indice que vai começar, quantidade de letras que vai extrair) from tabela -- para extrair um pedaço de dentro de uma string
+    select replace(coluna, 'o que esta buscando para substituir', 'pelo o que vai substituir') from tabela -- para substituir algo por outra coisa
