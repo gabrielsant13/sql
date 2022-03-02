@@ -124,3 +124,66 @@ select concat(coluna1, coluna2... colunaN) from tabela --para ter espaço entre 
     select len(coluna) from tabela -- para retornar o numero de caracteres de uma string
     select substring(coluna, indice que vai começar, quantidade de letras que vai extrair) from tabela -- para extrair um pedaço de dentro de uma string
     select replace(coluna, 'o que esta buscando para substituir', 'pelo o que vai substituir') from tabela -- para substituir algo por outra coisa
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--Funções matemáticas
+--funções matematicas sql server (google)
+
+--Operações básicas de matemática funcionam normalmente
+select coluna1 + coluna2 from tabela...
+
+--Para arredondar valores ROUND
+select round(coluna, 2 /*(seria a precisao decimal)*/) from tabela
+
+--Raiz quadrada
+select sqrt(coluna) from tabela
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--SUB-SELECT
+
+--Exemplo
+    --Monte um relatorio de todos os produtos que tem preço de venda acima da media
+    select * from tabela where coluna > (select avg(coluna) from tabela)  --OBS: é melhor usar inner join para alguns casos
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--Utilização de outro banco de dados --Northwind--
+
+--SELF-JOIN
+--Sintaxe
+    select coluna from tabela A, tabela B where condicao
+    --exemplo1: eu quero todos os clientes que moram na mesma regiao
+        select A.contactname, b.contactname from customers A, customers B where A.region = B.region
+
+    --exemplo2: eu quero encontrar (nome e data de contratação) de todos os funcionarios que foram contratados no mesmo ano
+        select A.firstname, A.hiredate, B.firstname, B.hiredate from employees A, employees B where datepart(year, A.hiredate) = datepart(year, B.hiredate)
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--TIPOS DE DADOS
+
+1 booleanos 
+    -- Por padrao ele é inicializado como nulo, e pode receber tanto 1 ou 0 BIT > tipo booleano 
+
+2 caracteres 
+    -- Tamanho fixo - char // permite inserir ate uma quantidade fixa de caracters e sempre ocupa todo o espaço reservado
+    -- Tamanhos variaveis - varchar ou nvarchar // permite inserir ate uma quantidade que for definida, porem so usa o espaco que for preenchido
+
+3 numeros
+    valores exatos
+        1 TINYINT -- nao tem valor fracionado, somente inteiros
+        2 SMALLINT -- mesma coisa, porem limite maior
+        3 INT -- mesma coisa, porem limite maior
+        4 BIGINT -- mesma coisa, porem limite maior
+        5 NUMERIC ou DECIMAL -- valores exatos, porem permite ter parte fracionada, que tambem pode ser especificado a precisao e escala (escala é o numero de digitos na parte fracional) ex: Numeric (5,2), 5 é a quantidade total de digitos que pode armazenar (precisao), 2 é quantos numeros decimais ele terá. nesse caso => 123,45
+
+    valores aproximados
+        1 REAL --tem precisao aproximada de ate 15 digitos (apos a virgula)
+        2 FLOAT -- mesmo conceito do REAL
+
+4 temporais
+    Date -- armazena data no formato aaaa/mm/dd
+    DATETIME -- armazena data e horas no formato aaaa/mm/dd:hh:mm:ss
+    DATETIME2 --armazena data e horas com adicao de milissegundos no formato aaaa/mm/dd:hh:mm:sssssss
+    SMALLDATETIME -- data e hora mas respeitando o limite entre '1900-01-01:00:00:00' ate '2079-06-06:23:59:59'
+    TIME -- armazena horas com adicao de milissegundos no formato hh:mm:sssssss respeitando o limite entre '00:00:00.0000000' ate '23:59:59.9999999'
+    DATETIMEOFFSET -- permite armazenar informaçoes de data e horas incluindo o fuso horario
+
