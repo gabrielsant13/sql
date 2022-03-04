@@ -186,4 +186,106 @@ select sqrt(coluna) from tabela
     SMALLDATETIME -- data e hora mas respeitando o limite entre '1900-01-01:00:00:00' ate '2079-06-06:23:59:59'
     TIME -- armazena horas com adicao de milissegundos no formato hh:mm:sssssss respeitando o limite entre '00:00:00.0000000' ate '23:59:59.9999999'
     DATETIMEOFFSET -- permite armazenar informaçoes de data e horas incluindo o fuso horario
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+
+--TABLES
+create table nomeTabela (
+    coluna1 tipo restricaoDaColuna,
+    coluna2 tipo..,
+    coluna3 tipo
+);
+    --Principais tipos de restricoes que podem ser aplicadas
+    NOT NULL -- nao permite nulos
+    UNIQUE -- força que todos os valores em uma coluna sejam diferentes
+    PRIMARY KEY -- uma junção de NOT NULL E UNIQUE
+    FOREIGN KEY -- identifica unicamente uma linha em outra tabela (foreign key references nomeDaTabela_onde_ta_a_PK)
+    CHECK -- força uma condiçao especifica em uma coluna (ex: apenas sejam inseridos valores com ate 10 caracteres)
+    DEFAULT -- força um valor padrao quando nenhum valor é passado 
+
+--INSERT INTO
+insert into nomeTabela(coluna1,coluna2,...)
+values (valor1, valor2,...),
+(valor1, valor2,...), -- podendo colocar varias linhas ao mesmo tempo
+(valor1, valor2,...)
+
+    --Inserindo informaçoes de outra tabela em uma tabela existente
+    insert into tabelaA (coluna1) select coluna2 from tabelaB -- puxando informaçao da coluna1 tabelaA para coluna2 tabelaB
+
+-- Copiando dados de outra tabela para uma nova tabela
+select * into nomeTabelaNova from TabelaASerCopiada
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+--CRUD tabela/BD
+
+--UPDATE
+--Serve para atualizar linhas da tabela, podendo atualizar tanto uma linha como todas as linhas de uma vez
+update nomeTabela 
+set coluna1 = valor1
+    coluna2 = valor2
+where condicao -- Caso esqueça de colocar essa condição, sera alterado todos os dados do BD
+
+--DELETE
+--Apagar linhas da tabela, caso esqueça da condição, sera excluido tudo da tabela
+delete from nomeTabela where condicao
+
+--ALTER TABLE
+--Serve para alterar a estrutura de uma tabela
+alter table nomeTabela condicoes_que_serao_alteradas
+    --Exemplos do que pode ser feito
+        --add, remover, or alterar uma coluna
+        --setar valores padroes para uma coluna
+        --add ou remover restrições de colunas
+        --renomear uma tabela/coluna
+
+--Adicionando uma nova coluna
+alter table nomeTabela add novaColuna tipoColuna
+
+--Alterando algum tipo de limite de uma coluna
+alter table tabela alter column nomeColuna novo_valor_a_ser_alterado
+
+--Alterando nome da coluna
+EXEC sp_RENAME 'nomeTabela.nomeColunaAtual', 'nomeColunaNova', 'COLUMN'
+
+--Alterando o nome da tabela
+EXEC sp_RENAME 'nomeTabelaAtual', 'nomeTabelaNova'
+
+--DROP TABLE
+--Serve para excluir uma tabela
+drop table nomeTabela
+
+--Apagar apenas o conteudo da tabela
+truncate table nomeTabela
+----------------------------------------------------------------------------------------------------------------------------
+
+--CHECK CONSTRAINT
+--Serve para criar restrições sobre valores
+--exemplo:
+    create table carteiraMotorista(
+        id int not null,
+        nome varchar(255) not null,
+        idade int CHECK (idade >= 18) -- check ta impondo uma validação
+    )
+
+--NOT NULL CONSTRAINT
+--Serve para dizer que precisamos que o valor seja preenchido
+--exemplo:
+        create table carteiraMotorista(
+        id int NOT NULL,
+        nome varchar(255) NOT NULL,
+        idade int CHECK (idade >= 18) -- check ta impondo uma validação
+    )
+
+--UNIQUE CONSTRAINT
+--Nao permite que seja inserido valores repetidos em uma tabela, porem nao é uma PK
+--exemplo:
+    create table carteiraMotorista(
+        id int NOT NULL,
+        nome varchar(255) NOT NULL,
+        idade int CHECK (idade >= 18) -- check ta impondo uma validação
+        codigoCNH int not null UNIQUE
+    )
+
+--VIEWS
+--Uma forma de extrair informações  especificas de uma tabela existente
+--basicamente cria uma tabela 'atalho' derivada da tabela principal, contendo apenas as informaçoes que quero apresentar
+create view [nome_da_view] as select coluna1, coluna2 from tabela where condicao
