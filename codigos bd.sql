@@ -289,3 +289,30 @@ truncate table nomeTabela
 --Uma forma de extrair informações  especificas de uma tabela existente
 --basicamente cria uma tabela 'atalho' derivada da tabela principal, contendo apenas as informaçoes que quero apresentar
 create view [nome_da_view] as select coluna1, coluna2 from tabela where condicao
+
+--CASE -- ORACLE
+--semelhante a IF-ELSE
+--possível tambem criar colunas dinâmicas
+--exemplo:
+    select
+        CASE
+            WHEN coluna1 > 0 THEN 1                            -- Caso a coluna1 for maior que 0 retorna 1
+            WHEN coluna1 <= 0 OR coluna1 IS NULL THEN 0        -- Caso a coluna1 for menor ou igual a 0 ou nula retorna 0
+        END AS colunaNova_com_o_Resultado                      -- end as nome_da_nova_coluna
+    from tabela
+    
+    
+--NVL
+--ou retorna o valor de algo ou retorna o outro parametro indicado
+--exemplo:
+    select
+        NVL(a+b, c)             --se a+b for null ela retornará c  --dois parametros obrigatorios
+    from tabela
+
+
+
+
+
+
+
+
