@@ -309,10 +309,19 @@ create view [nome_da_view] as select coluna1, coluna2 from tabela where condicao
         NVL(a+b, c)             --se a+b for null ela retornará c  --dois parametros obrigatorios
     from tabela
 
+-- OVER
+--utilizado junto com funções de agregação, para ignorar o group by
+--exemplo:
+    select ID, max(coluna) OVER (PARTITION BY coluna_a_ser_referencia(ID)), NOME
+    from tabela
 
-
-
-
-
+--MÉTODO DE CONTAGEM DE DADOS PARA DADOS DUPLICADOS
+--utilizado para verificar se tem dados duplicados quando nao se possui PK
+--exemplo:
+    select count(ID), NOME 
+    from (
+        select ID, NOME
+        from tabela
+    ) group by ID having count(ID) > 1              -- para trazer valores quando ID se repetir mais de 1 vez
 
 
